@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic">
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $("#includedContent").load("data.html");
+        });
+    </script>-->
+
+    <style>
+    #map {
+    width: 150%;
+    height: 500px;
+    }
+    </style>
+</head>
+<body ng-app="WeatherApp" ng-controller="ListController" layout="column" layout-align="top center">
+
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <span class="md-flex">Weather Search</span>
+    </div>
+</md-toolbar>
+
+<md-content layout-align="center center">
+    <div class="app-content" >
+        <form novalidate ng-submit="search()">
+
+            <md-input-container>
+                <label>Search for</label>
+                <input type="text" class="long" ng-model="cityname" />
+            </md-input-container>
+            <button>Search</button>
+            <div ng-show="isSearching">
+                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+            </div>
+        </form>
+
+        <div>
+           <div ng-bind-html="myhtml"></div>
+
+
+        </div>
+    </div>
+
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <script>
+
+        var geocoder;
+        var map;
+        var Ireland = "london";
+        function initMap()
+        {
+            geocoder = new google.maps.Geocoder();
+            var latlng = new google.maps.LatLng(53.3496, -6.3263);
+            var mapOptions =
+            {
+                zoom: 8,
+                center: latlng
+            }
+            map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            codeAddress(Ireland);//call the function
+        }
+
+        function codeAddress(address) {
+            geocoder.geocode({address: address}, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    map.setCenter(results[0].geometry.location);//center the map over the result
+                    //place a marker at the location
+                    map.setZoom(9);
+                    var marker = new google.maps.Marker(
+                            {
+                                map: map,
+                                position: results[0].geometry.location,
+                                zoom: 8
+                            });
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+
+        }
+
+
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHbdOMeoSkrxlSXCXxEJ-JoiP7YFtGIjI&callback=initMap">
+    </script>
+
+
+</md-content>
+
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-aria/angular-aria.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script type="text/javascript" src="bower_components/angular-material/angular-material.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.8/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="bower_components/hammerjs/hammer.min.js"></script>
+<script type="text/javascript" src="app.js"></script>
+
+</body>
+</html>
